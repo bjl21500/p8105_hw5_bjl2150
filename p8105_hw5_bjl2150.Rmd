@@ -15,3 +15,8 @@ library(rvest)
 longitudinal = tibble(list.files(path = "./data.", pattern = NULL, all.files = FALSE, full.names = FALSE, recursive = FALSE, ignore.case = FALSE, include.dirs = FALSE, no.. = FALSE))
 ```
 
+
+long_2 = map(.x = longitudinal,)
+
+
+
