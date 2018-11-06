@@ -13,13 +13,46 @@ library(rvest)
 ## Problem 1
 ```{r}
 # Made a dataframe with all the file names
-longitudinal = tibble(list.files(path = "./data.", pattern = NULL, all.files = FALSE, full.names = FALSE, recursive = FALSE, ignore.case = FALSE, include.dirs = FALSE, no.. = FALSE))
+longitudinal = tibble(list.files(path = "./data", pattern = NULL, all.files = FALSE, full.names = FALSE, recursive = FALSE, ignore.case = FALSE, include.dirs = FALSE, no. = FALSE)) 
+```
+  
+
+
+
+long_2 = map(longitudinal, read_csv(file = "./data"))
+
+long_2 = longitudinal %>%
+  map(read_csv)
 ```
 
-long_2 = map(longitudinal, ~read_csv(file = "."))
+data <- files %>%
+  map(read_csv) %>%    # read in all the files individually, using
+                       # the function read_csv() from the readr package
+  reduce(rbind)        # reduce with rbind into one dataframe
+data
 
 long_2
 
+
+
+### Problem 2
+
+library(tidyverse)
+library(rvest)
+library(httr)
+
+url = "https://raw.githubusercontent.com/washingtonpost/data-homicides/master/homicide-data.csv"
+homicides_data = read_html(url)
+
+homicides_data
+
+homicides = GET("https://raw.githubusercontent.com/washingtonpost/data-homicides/master/homicide-data.csv") %>% 
+  content("parsed")
+
+nyc_water = GET("https://raw.githubusercontent.com/washingtonpost/data-homicides/master/homicide-data.csv") %>% 
+  content("text") %>%
+  jsonlite::fromJSON() %>%
+  as_tibble()
 ```
 
 
