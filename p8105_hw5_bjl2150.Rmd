@@ -13,26 +13,15 @@ library(rvest)
 ## Problem 1
 ```{r}
 # Made a dataframe with all the file names
-longitudinal = tibble(list.files(path = "./data", pattern = NULL, all.files = FALSE, full.names = FALSE, recursive = FALSE, ignore.case = FALSE, include.dirs = FALSE, no. = FALSE)) 
+longitudinal = list.files(path = "./data", pattern = NULL, all.files = FALSE, full.names = FALSE, recursive = FALSE, ignore.case = FALSE, include.dirs = FALSE, no. = FALSE)
+
+#Using the string function in order to apply a pathname to each datafile within longitudinal
+long = str_c("./data/",longitudinal)
+
+
+long_2 = map(long, read_csv)
+
 ```
-  
-
-
-
-long_2 = map(longitudinal, read_csv(file = "./data"))
-
-long_2 = longitudinal %>%
-  map(read_csv)
-```
-
-data <- files %>%
-  map(read_csv) %>%    # read in all the files individually, using
-                       # the function read_csv() from the readr package
-  reduce(rbind)        # reduce with rbind into one dataframe
-data
-
-long_2
-
 
 
 ### Problem 2
