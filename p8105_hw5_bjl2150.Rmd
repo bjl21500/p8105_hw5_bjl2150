@@ -28,6 +28,9 @@ tidy = separate(new, longitudinal, into = c("control_arm", "id.csv"), sep = "_")
 gather_data = gather(tidy, key = week, value = n, week_1:week_8) %>%
   separate(week, into = c("number", "week"), sep = "_") %>%
   select(-number)
+
+# Making of spaghetti plot
+
 ```
 
   
