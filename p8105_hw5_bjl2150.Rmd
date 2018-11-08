@@ -11,7 +11,7 @@ library(rvest)
 library(ggridges)
 ```
 
-## Problem 1
+# Problem 1
 ```{r}
 # Made a dataframe with all the file names
 long = tibble(longitudinal = list.files(path = "./data", full.names = TRUE),
@@ -21,8 +21,7 @@ map(longitudinal, read_csv)) %>%
 
 long_tidy = separate(long, longitudinal, into = c("control_arm", "id.csv"), sep = "_") %>%
   separate(control_arm, into = c("data", "period", "control_arm"), sep = "/") %>%
-  select(-data, -period) %>%
-  separate(id.csv, into = c("id", "csv"), sep = ".")
+  select(-data, -period)
 
 
 
@@ -35,7 +34,7 @@ long_gather = gather(long_tidy, key = week, value = n, week_1:week_8) %>%
 # Making of spaghetti plot
 
 long_spaghetti = long_gather %>%
-  group_by(control_arm, week)
+  group_by(id.csv)
   
 
 ggplot(long_spaghetti, aes(x = week, y = n, color = control_arm)) +
@@ -52,7 +51,7 @@ brfss_spaghetti = brfss %>%
   geom_line() 
 
 
-### Problem 2
+# Problem 2
 
 ```{r}
 library(tidyverse)
@@ -61,9 +60,14 @@ library(httr)
 
 homicide_data = read_csv(file = "./homicidedata.csv")
 ```
+### Description of raw data:
+
+The homicide_data shows the numbers of homicides within the 
 
 
-
+homicide_citystate = homicide_data %>%
+  mutate(city_state = c((city, state))
+```
 
 
 
