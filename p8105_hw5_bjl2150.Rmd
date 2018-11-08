@@ -21,7 +21,8 @@ map(longitudinal, read_csv)) %>%
 
 long_tidy = separate(long, longitudinal, into = c("control_arm", "id.csv"), sep = "_") %>%
   separate(control_arm, into = c("data", "period", "control_arm"), sep = "/") %>%
-  select(-data, -period) 
+  select(-data, -period) %>%
+  separate(id.csv, into = c("id", "csv"), sep = ".")
 
 
 
@@ -58,7 +59,7 @@ library(tidyverse)
 library(rvest)
 library(httr)
 
-homicide_data = read_csv
+homicide_data = read_csv(file = ".")
 ```
 
 
