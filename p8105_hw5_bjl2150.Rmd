@@ -8,34 +8,39 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 library(rvest)
+library(ggridges)
 ```
 
 ## Problem 1
 ```{r}
 # Made a dataframe with all the file names
-new = tibble(longitudinal = list.files(path = "./data", full.names = TRUE),
+long = tibble(longitudinal = list.files(path = "./data", full.names = TRUE),
 map(longitudinal, read_csv)) %>%
   unnest()
 
-tidy = separate(new, longitudinal, into = c("control_arm", "id.csv"), sep = "_") %>%
+
+long_tidy = separate(long, longitudinal, into = c("control_arm", "id.csv"), sep = "_") %>%
   separate(control_arm, into = c("data", "period", "control_arm"), sep = "/") %>%
   select(-data, -period) 
 
-# %>% separate(id.csv, into = c("id", "csv"), sep = ".")
+
 
 
 # Tidying the dataframe so that variable 'week' is in one column rather than spread out.
-gather_data = gather(tidy, key = week, value = n, week_1:week_8) %>%
+long_gather = gather(long_tidy, key = week, value = n, week_1:week_8) %>%
   separate(week, into = c("number", "week"), sep = "_") %>%
   select(-number)
 
 # Making of spaghetti plot
 
-```
-
+long_spaghetti = long_gather %>%
+  group_by(control_arm, week)
   
 
-pulse_tidy_data = gather(pulse_data, key = visit, value = bdi, bdi_score_bl:bdi_score_12m)
+ggplot(long_spaghetti, aes(x = week, y = n, color = control_arm)) +
+  geom_line()
+```
+# %>% separate(id.csv, into = c("id", "csv"), sep = ".")
 
 
 brfss_spaghetti = brfss %>%
@@ -44,44 +49,16 @@ brfss_spaghetti = brfss %>%
   summarize(location_numbers = n()) %>%
   ggplot(aes(x = year, y = location_numbers, color = locationabbr)) + 
   geom_line() 
-```
-
-
-  mutate(str_replace())
-```
-
-separate(pulse_tidy_data, visit, into = c("remove_1", "remove_2", "visit"), sep = "_")
-
-
-long = tibble(longitudinal = list.files(path = "./data", full.names = TRUE))
-
-#Using the string function in order to apply a pathname to each datafile within longitudinal
-long = str_c("./data/",longitudinal)
-
-
-long_2 = map_df(long, read_csv)
-
-```
 
 
 ### Problem 2
 
+```{r}
 library(tidyverse)
 library(rvest)
 library(httr)
 
-url = "https://raw.githubusercontent.com/washingtonpost/data-homicides/master/homicide-data.csv"
-homicides_data = read_html(url)
-
-homicides_data
-
-homicides = GET("https://raw.githubusercontent.com/washingtonpost/data-homicides/master/homicide-data.csv") %>% 
-  content("parsed")
-
-nyc_water = GET("https://raw.githubusercontent.com/washingtonpost/data-homicides/master/homicide-data.csv") %>% 
-  content("text") %>%
-  jsonlite::fromJSON() %>%
-  as_tibble()
+homicide_data = read_csv
 ```
 
 
