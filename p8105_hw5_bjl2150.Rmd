@@ -59,7 +59,7 @@ library(tidyverse)
 library(rvest)
 library(httr)
 
-homicide_data = read_csv(file = ".")
+homicide_data = read_csv(file = "./homicidedata.csv")
 ```
 
 
