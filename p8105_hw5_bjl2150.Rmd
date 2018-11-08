@@ -21,10 +21,26 @@ tidy = separate(new, longitudinal, into = c("control_arm", "id.csv"), sep = "_")
   separate(control_arm, into = c("data", "period", "control_arm"), sep = "/") %>%
   select(-data, -period) 
 
-#s %>% eparate(id.csv, into = c("id", "csv"), sep = ".")
+# %>% separate(id.csv, into = c("id", "csv"), sep = ".")
 
 
+# Tidying the dataframe so that variable 'week' is in one column rather than spread out.
+gather_data = gather(tidy, key = week, value = n, week_1:week_8) %>%
+  separate(week, into = c("number", "week"), sep = "_") %>%
+  select(-number)
+```
 
+  
+
+pulse_tidy_data = gather(pulse_data, key = visit, value = bdi, bdi_score_bl:bdi_score_12m)
+
+
+brfss_spaghetti = brfss %>%
+  group_by(locationabbr, year) %>%
+  distinct(locationdesc) %>%
+  summarize(location_numbers = n()) %>%
+  ggplot(aes(x = year, y = location_numbers, color = locationabbr)) + 
+  geom_line() 
 ```
 
 
