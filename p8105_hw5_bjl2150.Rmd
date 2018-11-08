@@ -24,6 +24,15 @@ long_tidy = separate(long, longitudinal, into = c("control_arm", "id.csv"), sep 
   select(-data, -period)
 
 
+two_long_tidy = long %>% 
+  separate(longitudinal, into = c("control_arm", "id.csv", "data"), sep = "/") %>%
+  select(-id.csv) %>%
+  separate(data, into = c("subject_id", "csv"), sep = ".csv") %>%
+  select(-csv)
+```
+  separate(control_arm, into = c("data", "period", "control_arm"), sep = "/") %>%
+  select(-data, -period)
+
 
 
 # Tidying the dataframe so that variable 'week' is in one column rather than spread out.
@@ -34,14 +43,28 @@ long_gather = gather(long_tidy, key = week, value = n, week_1:week_8) %>%
 # Making of spaghetti plot
 
 long_spaghetti = long_gather %>%
-  group_by(id.csv)
+  distinct() %>%
+  group_by(id.csv) 
   
 
-ggplot(long_spaghetti, aes(x = week, y = n, color = control_arm)) +
-  geom_line()
+ggplot(long_spaghetti, aes(x = week, y = n, group = id.csv, color = control_arm)) + 
+  geom_path()
+
+
 ```
 # %>% separate(id.csv, into = c("id", "csv"), sep = ".")
 
+brfss_smart2010 %>% 
+  select(year, locationabbr, locationdesc) %>% 
+  distinct() %>%
+  group_by(year) %>% 
+  count(locationabbr) %>% 
+  ggplot(aes(x = year, y = n, group = locationabbr, color = locationabbr)) +
+  geom_path() + 
+  labs(title = "Location count for each state by year") + 
+  viridis::scale_color_viridis(
+    name = "locationabbr", 
+    discrete = TRUE)
 
 brfss_spaghetti = brfss %>%
   group_by(locationabbr, year) %>%
@@ -64,7 +87,7 @@ homicide_data = read_csv(file = "./homicidedata.csv")
 
 The homicide_data shows the numbers of homicides within the 
 
-```{r}
+
 # Making of the new variable 'city_state'
 homicide_citystate = homicide_data %>%
   mutate(city_state = str_c(city, ", " , state)) %>%
@@ -75,6 +98,10 @@ homicide_summarize = homicide_citystate %>%
   mutate (column = recode(disposition, `Closed without arrest` = "homicides", `Open/No arrest` = "unsolved_homicides")) %>%
   group_by(city_state, disposition) %>%
   count()
+
+balitmore = homicide_summarize %>%
+  filter(city_state == "Baltimore, MD") %>%
+  prop.test
 ```
 
 
