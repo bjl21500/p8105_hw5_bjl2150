@@ -16,7 +16,14 @@ library(rvest)
 new = tibble(longitudinal = list.files(path = "./data", full.names = TRUE),
 map(longitudinal, read_csv)) %>%
   unnest()
+
+tidy = separate(new, longitudinal, into = c("control_arm", "subject_id"), sep = "_")
 ```
+
+separate(pulse_tidy_data, visit, into = c("remove_1", "remove_2", "visit"), sep = "_")
+
+
+long = tibble(longitudinal = list.files(path = "./data", full.names = TRUE))
 
 #Using the string function in order to apply a pathname to each datafile within longitudinal
 long = str_c("./data/",longitudinal)
