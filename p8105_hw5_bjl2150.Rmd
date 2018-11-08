@@ -17,7 +17,13 @@ new = tibble(longitudinal = list.files(path = "./data", full.names = TRUE),
 map(longitudinal, read_csv)) %>%
   unnest()
 
-tidy = separate(new, longitudinal, into = c("control_arm", "subject_id"), sep = "_")
+tidy = separate(new, longitudinal, into = c("control_arm", "subject_id_csv"), sep = "_") %>%
+  separate(control_arm, into = c("data", "period", "arm"), sep = "/") %>%
+  select(-data, -period)
+```
+
+
+  mutate(str_replace())
 ```
 
 separate(pulse_tidy_data, visit, into = c("remove_1", "remove_2", "visit"), sep = "_")
