@@ -64,9 +64,9 @@ homicide_data = read_csv(file = "./homicidedata.csv")
 
 The homicide_data shows the numbers of homicides within the 
 
-
+```{r}
 homicide_citystate = homicide_data %>%
-  mutate(city_state = c((city, state))
+  mutate(city_state = str_c(city, ", " , state))
 ```
 
 
