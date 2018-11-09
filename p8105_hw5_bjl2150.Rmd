@@ -89,7 +89,6 @@ homicide_data = read_csv(file = "./homicidedata.csv")
 ```
 
 
-
 ### Description of raw data:
 
 The homicide_data shows the numbers of homicides within the 
@@ -99,7 +98,23 @@ The homicide_data shows the numbers of homicides within the
 homicide_citystate = homicide_data %>%
   mutate(city_state = str_c(city, ", " , state)) %>%
   select(disposition, city_state)
+
+
+homicide_summarize = homicide_citystate %>% 
+  group_by(disposition, city_state) %>%
+  summarize(n = n()) %>%
+  spread(key = disposition, value = n)
 ```
+
+  mutate(total_homicides = )
+
+  separate(disposition, into = C("Closed by arrest", "Closed without arrest", "Open/No arrest")
+  mutate(Closed = filter(disposition == "Closed without arrest"))
+       
+       %>%
+mutate(unsolved_homicides = recode(disposition != "Close by arrest"))
+
+
 
 homicide_summarize = homicide_citystate %>% 
 mutate(total_homicide = disposition) %>%
