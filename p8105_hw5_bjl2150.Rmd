@@ -24,7 +24,7 @@ long = tibble(longitudinal = list.files(path = "./data", full.names = TRUE),
 
 ### Description of the raw dataset:
 
-This dataset contains results of subjects who were a part of an experiment. There were twenty subjects (ten assigned to the control arm and ten assigned to the exerimental arm, respectively). The zipfile, which contained the data, was comprised of twenty Excel per subject (twenty files in total). Each Excel spreadsheet contained observatios over the eight weeks that they were followed.
+This dataset contains results of subjects who were a part of an experiment. There were twenty subjects (ten assigned to the control arm and ten assigned to the exerimental arm, respectively) who were followed for a period of time. The zipfile, which contained the data, was comprised of twenty Excel per subject (twenty files in total). Each Excel spreadsheet contained observations over the eight weeks that they were followed.
 
 ```{r}
 # Created this dataframe in order to extract the control 'arm' to be later added to another dataframe.
@@ -128,8 +128,23 @@ baltimore_propr %>%
 city_wide_propr = map(homicide_summarize$city_state, prop.test)
 
 
+city_wide_prop = map(df$total_homicides, df$unsolved_homicides, prop.test)
+
+map2(.x, .y, .f, ...)
+
+output = homicide_summarize %>%
+  filter(total_homicides != "NA") %>%
+  mutate(new =  map2(.x = unsolved_homicides, .y = total_homicides, ~prop.test(x = .x, n = .y))) %>%
+  broom::tidy()
+  unnest()
+
 ```
+
+map2(df$Success, df$N, prop.test)
+
 map(weather_nest$data, ~lm(tmax ~ tmin, data = .x))
+
+output = map_df(.x = df, ~ mean_and_sd(.x))
 
 
 
