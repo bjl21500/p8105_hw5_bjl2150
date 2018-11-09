@@ -151,7 +151,8 @@ baltimore_propr %>%
 
 ### Proportion of unsolved homicides per cities
 ```{r}
-# Used the prop.test within a mutate function in order to create a new variable. # The 'map' function was applied and then, tidying and 'unnest'ing occurred. 
+# Used the prop.test within a mutate function in order to create a new variable.
+# The 'map' function was applied and then, tidying and 'unnest'ing occurred. 
 
 city_state_propr = homicide_summarize %>%
   filter(total_homicides != "NA") %>%
@@ -182,7 +183,7 @@ city_state_output %>%
 ```
 
 Figure 2 illustrates the proprtion of unsolved estimates by the fifty cities collected by the Washington Post. A boxplot was used to create the graph and the 'geom_errorbar' function was used to obtain the error bars using the confidence intervals. 
-According to Figure 2, Chicago, Illinios is an outlier. This indicates that it has the highest proportion of unsolved homicides of these fifty cities.In Observing the rest of the cities, there is no apparent trend in the proportion of unsolved homicides by region. Additionally, for some of the observed estimates,  many of these proportions are unsignificant as evidenced by the wide error bars (ex. Tampa, Fl.).
+According to Figure 2, Chicago, Illinios is an outlier. This indicates that it has the highest proportion of unsolved homicides of these fifty cities.In Observing the rest of the cities, there is no apparent trend in the proportion of unsolved homicides by region. Additionally, for some of the observed estimates,  many of these proportions are insignificant as evidenced by the wide error bars (ex. Tampa, Fl.).
 
 
 
