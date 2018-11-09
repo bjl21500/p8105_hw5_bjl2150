@@ -18,41 +18,38 @@ long = tibble(longitudinal = list.files(path = "./data", full.names = TRUE),
 map(longitudinal, read_csv)) %>%
   unnest()
 
+# Created this dataframe in order to extract the control 'arm' to be later added to another dataframe.
+long_tidy = separate(long, longitudinal, into = c("control_arm", "id.csv", "period"), sep = "_") %>%
+  select(-period) %>%
+  separate(control_arm, into = c("data", "arm"), sep = "/data/") %>%
+  select(-data, -id.csv, -(week_1:week_8))
+  
 
-long_tidy = separate(long, longitudinal, into = c("control_arm", "id.csv"), sep = "_") %>%
-  separate(control_arm, into = c("data", "period", "control_arm"), sep = "/") %>%
-  select(-data, -period)
-
-
+# Created a new datafram in order to get make the 'subject_id' through wrangling of the data.
 two_long_tidy = long %>% 
   separate(longitudinal, into = c("control_arm", "id.csv", "data"), sep = "/") %>%
   select(-id.csv) %>%
   separate(data, into = c("subject_id", "csv"), sep = ".csv") %>%
-  select(-csv)
-```
-  separate(control_arm, into = c("data", "period", "control_arm"), sep = "/") %>%
-  select(-data, -period)
+  select(-control_arm, -csv) 
 
+# Combined the two dataframes to ensure that the 'arm' variable was included in the final dataframe.
+final = cbind(long_tidy, two_long_tidy)
 
 
 # Tidying the dataframe so that variable 'week' is in one column rather than spread out.
-long_gather = gather(long_tidy, key = week, value = n, week_1:week_8) %>%
+long_gather = gather(final, key = week, value = n, week_1:week_8) %>%
   separate(week, into = c("number", "week"), sep = "_") %>%
   select(-number)
 
-# Making of spaghetti plot
-
+# Making of spaghetti plot shwoing observations on each subject over time.
 long_spaghetti = long_gather %>%
   distinct() %>%
-  group_by(id.csv) 
+  group_by(subject_id) 
   
-
-ggplot(long_spaghetti, aes(x = week, y = n, group = id.csv, color = control_arm)) + 
+## It works!!!
+ggplot(long_spaghetti, aes(x = week, y = n, group = subject_id, color = arm)) + 
   geom_path()
-
-
-
-# %>% separate(id.csv, into = c("id", "csv"), sep = ".")
+```
 
 brfss_smart2010 %>% 
   select(year, locationabbr, locationdesc) %>% 
