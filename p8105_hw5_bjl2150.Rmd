@@ -34,14 +34,14 @@ long_tidy = separate(long, longitudinal, into = c("control_arm", "id.csv", "peri
   select(-data, -id.csv, -(week_1:week_8))
   
 
-# Created a new datafram in order to get make the 'subject_id' through wrangling of the data.
+# Created a new dataframe in order to get make the 'subject_id' through wrangling of the data.
 two_long_tidy = long %>% 
   separate(longitudinal, into = c("control_arm", "id.csv", "data"), sep = "/") %>%
   select(-id.csv) %>%
   separate(data, into = c("subject_id", "csv"), sep = ".csv") %>%
   select(-control_arm, -csv) 
 
-# Combined the two dataframes to ensure that the 'arm' variable was included in the final dataframe.
+# Combined the two above dataframes to ensure that the 'arm' variable was included in the final dataframe.
 final = cbind(long_tidy, two_long_tidy)
 
 
@@ -53,7 +53,7 @@ long_gather = gather(final, key = week, value = n, week_1:week_8) %>%
 
 ## Problem 1.2
 ```{r}
-# Making of spaghetti plot shwoing observations on each subject over time.
+# Making of spaghetti plot showing observations on each subject over time.
 long_spaghetti = long_gather %>%
   distinct() %>%
   group_by(subject_id) 
