@@ -132,12 +132,18 @@ city_wide_prop = map(df$total_homicides, df$unsolved_homicides, prop.test)
 
 map2(.x, .y, .f, ...)
 
-```{r}
+
 output = homicide_summarize %>%
   filter(total_homicides != "NA") %>%
   mutate(new =  map2(.x = unsolved_homicides, .y = total_homicides, ~prop.test(x = .x, n = .y))) %>%
   mutate(new =map(new, broom::tidy)) %>% 
   unnest()
+
+city_state_output = output %>%
+  select(city_state, estimate, conf.low, conf.high, p.value)
+
+city_state_output
+ggplot(weather_df, aes(x = name, y = tmax)) + geom_boxplot()
 
 ```
 
