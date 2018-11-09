@@ -131,28 +131,21 @@ baltimore_propr %>%
 
 ## Problem 2.3
 
-city_wide_propr = map(homicide_summarize$city_state, prop.test)
-
-
-city_wide_prop = map(df$total_homicides, df$unsolved_homicides, prop.test)
-
-map2(.x, .y, .f, ...)
-
 ```{r}
+# Usng the prrop.test within a mutate function in order to create a new variable where the map function was appplied to. Then tidied and unnested the 'new' column
 output = homicide_summarize %>%
   filter(total_homicides != "NA") %>%
   mutate(new =  map2(.x = unsolved_homicides, .y = total_homicides, ~prop.test(x = .x, n = .y))) %>%
   mutate(new =map(new, broom::tidy)) %>% 
   unnest()
 
+# Specifically selelcted out the estimates and both confidence intervals per city, state. Additonally, reordering the 'estimate' variable.
 city_state_output = output %>%
-  select(city_state, estimate, conf.low, conf.high, p.value) %>% 
-  mutate(estimate = as.factor(estimate)) 
+  select(city_state, estimate, conf.low, conf.high, p.value) %>%
+  mutate(city_state = forcats::fct_reorder(city_state, estimate))
 ```
-%>%
-  mutate(estimate_new = forcats::fct_reorder(estimate))
 
-  mutate(estimate = fct_reorder())
+ 
 
 city_state_output %>% 
   ggplot(aes(x = city_state, y = estimate)) + geom_boxplot() +
