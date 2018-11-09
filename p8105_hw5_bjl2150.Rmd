@@ -58,25 +58,6 @@ ggplot(long_spaghetti, aes(x = week, y = n, group = subject_id, color = arm)) +
   geom_path()
 ```
 
-brfss_smart2010 %>% 
-  select(year, locationabbr, locationdesc) %>% 
-  distinct() %>%
-  group_by(year) %>% 
-  count(locationabbr) %>% 
-  ggplot(aes(x = year, y = n, group = locationabbr, color = locationabbr)) +
-  geom_path() + 
-  labs(title = "Location count for each state by year") + 
-  viridis::scale_color_viridis(
-    name = "locationabbr", 
-    discrete = TRUE)
-
-brfss_spaghetti = brfss %>%
-  group_by(locationabbr, year) %>%
-  distinct(locationdesc) %>%
-  summarize(location_numbers = n()) %>%
-  ggplot(aes(x = year, y = location_numbers, color = locationabbr)) + 
-  geom_line() 
-
 
 # Problem 2
 
@@ -111,8 +92,9 @@ homicide_summarize = homicide_citystate %>%
   select(city_state, total_homicides, unsolved_homicides)
 ```
 
-## Utilzation of prop.test
+## Problem 2.2
 
+### Utilzation of prop.test
 ```{r}
 # Filtered out Baltimore, MD from the homicide_summarize dataframe.
 baltimore = homicide_summarize %>%
@@ -132,8 +114,4 @@ baltimore_propr %>%
 
 
 
-homicide_summarize = homicide_citystate %>% 
-  filter(disposition %in% c("Closed without arrest", "Open/No arrest")) %>%
-  mutate(unsolved_homicides = recode(disposition, "disposition" = "Open/No arrest", disposition = "Closed without arrest")) %>%
-  group_by(city_state, disposition, unsolved_homicides) %>%
-  count()
+
