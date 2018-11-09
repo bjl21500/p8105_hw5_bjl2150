@@ -47,7 +47,10 @@ final = cbind(long_tidy, two_long_tidy)
 long_gather = gather(final, key = week, value = n, week_1:week_8) %>%
   separate(week, into = c("number", "week"), sep = "_") %>%
   select(-number)
+```
 
+## Problem 1.2
+```{r}
 # Making of spaghetti plot shwoing observations on each subject over time.
 long_spaghetti = long_gather %>%
   distinct() %>%
@@ -110,6 +113,14 @@ baltimore_propr %>%
   broom::tidy() %>%
   select(estimate, conf.low, conf.high)
 ```
+
+## Problem 2.3
+
+city_wide_propr = map(homicide_summarize$city_state, prop.test)
+
+
+```
+map(weather_nest$data, ~lm(tmax ~ tmin, data = .x))
 
 
 
