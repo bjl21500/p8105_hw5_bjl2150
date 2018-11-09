@@ -51,7 +51,7 @@ ggplot(long_spaghetti, aes(x = week, y = n, group = id.csv, color = control_arm)
   geom_path()
 
 
-```
+
 # %>% separate(id.csv, into = c("id", "csv"), sep = ".")
 
 brfss_smart2010 %>% 
@@ -82,20 +82,30 @@ library(rvest)
 library(httr)
 
 homicide_data = read_csv(file = "./homicidedata.csv")
+
 ```
+
+
+
 ### Description of raw data:
 
 The homicide_data shows the numbers of homicides within the 
 
-
+```{r}
 # Making of the new variable 'city_state'
 homicide_citystate = homicide_data %>%
   mutate(city_state = str_c(city, ", " , state)) %>%
-  select(victim_race, victim_age, disposition, city_state)
+  select(disposition, city_state)
+```
 
 homicide_summarize = homicide_citystate %>% 
-  filter(disposition %in% c("Closed without arrest", "Open/No arrest")) %>%
-  mutate (column = recode(disposition, `Closed without arrest` = "homicides", `Open/No arrest` = "unsolved_homicides")) %>%
+mutate(total_homicide = disposition) %>%
+mutate(unsolved_homicides = recode(disposition != "Close by arrest"))
+
+
+mutate(unsolved_homicides = filter(disposition %in% c("Closed without arrest", "Open/No arrest")))
+  
+  homicide_summarize %>%
   group_by(city_state, disposition) %>%
   count()
 
@@ -105,4 +115,8 @@ balitmore = homicide_summarize %>%
 ```
 
 
-
+homicide_summarize = homicide_citystate %>% 
+  filter(disposition %in% c("Closed without arrest", "Open/No arrest")) %>%
+  mutate(unsolved_homicides = recode(disposition, "disposition" = "Open/No arrest", disposition = "Closed without arrest")) %>%
+  group_by(city_state, disposition, unsolved_homicides) %>%
+  count()
