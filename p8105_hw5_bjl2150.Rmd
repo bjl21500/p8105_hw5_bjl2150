@@ -8,6 +8,12 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+
 library(tidyverse)
 library(rvest)
 library(ggridges)
@@ -132,7 +138,7 @@ city_wide_prop = map(df$total_homicides, df$unsolved_homicides, prop.test)
 
 map2(.x, .y, .f, ...)
 
-
+```{r}
 output = homicide_summarize %>%
   filter(total_homicides != "NA") %>%
   mutate(new =  map2(.x = unsolved_homicides, .y = total_homicides, ~prop.test(x = .x, n = .y))) %>%
@@ -140,10 +146,20 @@ output = homicide_summarize %>%
   unnest()
 
 city_state_output = output %>%
-  select(city_state, estimate, conf.low, conf.high, p.value)
+  select(city_state, estimate, conf.low, conf.high, p.value) %>% 
+  mutate(estimate = as.factor(estimate)) 
+```
+%>%
+  mutate(estimate_new = forcats::fct_reorder(estimate))
 
-city_state_output
-ggplot(weather_df, aes(x = name, y = tmax)) + geom_boxplot()
+  mutate(estimate = fct_reorder())
+
+city_state_output %>% 
+  ggplot(aes(x = city_state, y = estimate)) + geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+geom_errorbar()
+
 
 ```
 
