@@ -105,13 +105,12 @@ homicide_summarize = homicide_citystate %>%
   group_by(disposition, city_state) %>%
   summarize(n = n()) %>%
   spread(key = disposition, value = n) %>%
-  janitor::clean_names()
+  janitor::clean_names() %>%
+  mutate(total_homicides = closed_by_arrest + closed_without_arrest + open_no_arrest) %>%
+  mutate(unsolved_homicides = closed_without_arrest + open_no_arrest)
 ```
 
-mutate(visit = str_replace(visit, "bdi_score_", "")
-       
-str(homicide_summarize)
-```
+
 
   mutate(total_homicides = )
 
