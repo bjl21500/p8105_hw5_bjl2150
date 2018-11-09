@@ -113,6 +113,8 @@ homicide_summarize = homicide_citystate %>%
 ## Problem 2.2
 
 ### Utilzation of prop.test
+
+### Baltiomore, MD
 ```{r}
 # Filtered out Baltimore, MD from the homicide_summarize dataframe.
 baltimore = homicide_summarize %>%
@@ -131,6 +133,7 @@ baltimore_propr %>%
 
 ## Problem 2.3
 
+### Proportion of unsolved homicides per cities
 ```{r}
 # Usng the prrop.test within a mutate function in order to create a new variable where the map function was appplied to. Then tidied and unnested the 'new' column
 output = homicide_summarize %>%
@@ -139,28 +142,19 @@ output = homicide_summarize %>%
   mutate(new =map(new, broom::tidy)) %>% 
   unnest()
 
-# Specifically selelcted out the estimates and both confidence intervals per city, state. Additonally, reordering the 'estimate' variable.
+# Specifically selelcted out the estimates and both confidence intervals per city, state. Additonally, reordering the 'city_state' variable by the 'estimate' variable.
 city_state_output = output %>%
   select(city_state, estimate, conf.low, conf.high, p.value) %>%
   mutate(city_state = forcats::fct_reorder(city_state, estimate))
-```
 
- 
-
+# Making of the boxplot with inclusion of error bars corresponding to low and high confidencce intervals.
 city_state_output %>% 
   ggplot(aes(x = city_state, y = estimate)) + geom_boxplot() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
-geom_errorbar()
-
-
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high))
 ```
 
-map2(df$Success, df$N, prop.test)
 
-map(weather_nest$data, ~lm(tmax ~ tmin, data = .x))
-
-output = map_df(.x = df, ~ mean_and_sd(.x))
 
 
 
