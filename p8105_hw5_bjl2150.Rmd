@@ -132,10 +132,11 @@ city_wide_prop = map(df$total_homicides, df$unsolved_homicides, prop.test)
 
 map2(.x, .y, .f, ...)
 
+```{r}
 output = homicide_summarize %>%
   filter(total_homicides != "NA") %>%
   mutate(new =  map2(.x = unsolved_homicides, .y = total_homicides, ~prop.test(x = .x, n = .y))) %>%
-  broom::tidy()
+  mutate(new =map(new, broom::tidy)) %>% 
   unnest()
 
 ```
