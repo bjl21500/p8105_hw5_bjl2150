@@ -24,6 +24,8 @@ long = tibble(longitudinal = list.files(path = "./data", full.names = TRUE),
 
 ### Description of the dataset
 
+This dataset contains results of subjects who were a part of an experiment. There were twenty subjects (ten assigned to the control arm and ten assigned to the exerimental arm, respectively). The zipfile, which contained the data, was comprised of twenty Excel per subject (twenty files in total). Each Excel spreadsheet contained observatios over the eight weeks that they were followed.
+
 ```{r}
 # Created this dataframe in order to extract the control 'arm' to be later added to another dataframe.
 long_tidy = separate(long, longitudinal, into = c("control_arm", "id.csv", "period"), sep = "_") %>%
