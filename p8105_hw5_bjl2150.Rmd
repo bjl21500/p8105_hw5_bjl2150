@@ -100,43 +100,17 @@ homicide_citystate = homicide_data %>%
   mutate(city_state = str_c(city, ", " , state)) %>%
   select(disposition, city_state)
 
-
+# Data wragling and tidying of dataframe to get the 'total_homicides' and 'unsolved_homicides' variables
 homicide_summarize = homicide_citystate %>% 
   group_by(disposition, city_state) %>%
   summarize(n = n()) %>%
   spread(key = disposition, value = n) %>%
   janitor::clean_names() %>%
   mutate(total_homicides = closed_by_arrest + closed_without_arrest + open_no_arrest) %>%
-  mutate(unsolved_homicides = closed_without_arrest + open_no_arrest)
+  mutate(unsolved_homicides = closed_without_arrest + open_no_arrest) %>%
+  select(city_state, total_homicides, unsolved_homicides)
 ```
 
-
-
-  mutate(total_homicides = )
-
-  separate(disposition, into = C("Closed by arrest", "Closed without arrest", "Open/No arrest")
-  mutate(Closed = filter(disposition == "Closed without arrest"))
-       
-       %>%
-mutate(unsolved_homicides = recode(disposition != "Close by arrest"))
-
-
-
-homicide_summarize = homicide_citystate %>% 
-mutate(total_homicide = disposition) %>%
-mutate(unsolved_homicides = recode(disposition != "Close by arrest"))
-
-
-mutate(unsolved_homicides = filter(disposition %in% c("Closed without arrest", "Open/No arrest")))
-  
-  homicide_summarize %>%
-  group_by(city_state, disposition) %>%
-  count()
-
-balitmore = homicide_summarize %>%
-  filter(city_state == "Baltimore, MD") %>%
-  prop.test
-```
 
 
 homicide_summarize = homicide_citystate %>% 
