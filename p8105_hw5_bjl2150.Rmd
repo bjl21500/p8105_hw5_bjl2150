@@ -17,9 +17,13 @@ library(ggridges)
 ```{r}
 # Made a dataframe with all the file names
 long = tibble(longitudinal = list.files(path = "./data", full.names = TRUE),
-map(longitudinal, read_csv)) %>%
+              map(longitudinal, read_csv)) %>% 
   unnest()
+```
 
+### Description of the dataset
+
+```{r}
 # Created this dataframe in order to extract the control 'arm' to be later added to another dataframe.
 long_tidy = separate(long, longitudinal, into = c("control_arm", "id.csv", "period"), sep = "_") %>%
   select(-period) %>%
@@ -76,12 +80,12 @@ brfss_spaghetti = brfss %>%
 # Problem 2
 
 ```{r}
+# Reading in the homicide data
 library(tidyverse)
 library(rvest)
 library(httr)
 
 homicide_data = read_csv(file = "./homicidedata.csv")
-
 ```
 
 
