@@ -18,6 +18,7 @@ library(ggridges)
 # Made a dataframe with all the file names
 long = tibble(longitudinal = list.files(path = "./data", full.names = TRUE),
               map(longitudinal, read_csv)) %>% 
+  janitor::clean_names() %>%
   unnest()
 ```
 
@@ -103,7 +104,13 @@ homicide_citystate = homicide_data %>%
 homicide_summarize = homicide_citystate %>% 
   group_by(disposition, city_state) %>%
   summarize(n = n()) %>%
-  spread(key = disposition, value = n)
+  spread(key = disposition, value = n) %>%
+  janitor::clean_names()
+```
+
+mutate(visit = str_replace(visit, "bdi_score_", "")
+       
+str(homicide_summarize)
 ```
 
   mutate(total_homicides = )
