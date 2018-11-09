@@ -1,4 +1,6 @@
 ---
+author: Briana Lettsome
+date: November 9th, 2018
 title: "p8105_hw5_bjl2150"
 output: github_document
 ---
